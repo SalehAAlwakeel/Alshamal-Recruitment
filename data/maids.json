@@ -1,0 +1,105 @@
+[
+  {
+    "id": "g0OstT-YzhxETRXpKi6d9",
+    "name": "ZOM",
+    "age": 52,
+    "nationality": "Philippines",
+    "etaDays": 24,
+    "hasExperience": true,
+    "yearsExperience": 5,
+    "photos": [
+      "/maids/img_4443_OQXrid5k.jpeg",
+      "/maids/img_4444_odMYCvS4.jpeg"
+    ],
+    "notes": "Experienced with kids"
+  },
+  {
+    "id": "28KvxjG6hdq50qI9CusrD",
+    "name": "Siti Nurhaliza",
+    "age": 32,
+    "nationality": "Indonesia",
+    "etaDays": 21,
+    "hasExperience": true,
+    "yearsExperience": 8,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Specializes in childcare and cleaning"
+  },
+  {
+    "id": "iFkU_sT9pD5L9x7Zl1wMP",
+    "name": "Grace Wanjiru",
+    "age": 26,
+    "nationality": "Kenya",
+    "etaDays": 10,
+    "hasExperience": false,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Eager to learn and adapt"
+  },
+  {
+    "id": "MDKp4ca-ekv-0Xhuyv0kO",
+    "name": "Hanna Tesfaye",
+    "age": 30,
+    "nationality": "Ethiopia",
+    "etaDays": 18,
+    "hasExperience": true,
+    "yearsExperience": 4,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Excellent cooking skills"
+  },
+  {
+    "id": "ZRcmPN0mVfBdylQbCiSJz",
+    "name": "Priya Kumari",
+    "age": 29,
+    "nationality": "Sri Lanka",
+    "etaDays": 25,
+    "hasExperience": true,
+    "yearsExperience": 6,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Multilingual and experienced"
+  },
+  {
+    "id": "avgA4KDlpLgxjo6_PUKQY",
+    "name": "Saraswati Thapa",
+    "age": 27,
+    "nationality": "Nepal",
+    "etaDays": 12,
+    "hasExperience": true,
+    "yearsExperience": 3,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Friendly and hardworking"
+  },
+  {
+    "id": "XLeYqy4GHfEV_WRSzcI96",
+    "name": "Lakshmi Devi",
+    "age": 31,
+    "nationality": "India",
+    "etaDays": 20,
+    "hasExperience": true,
+    "yearsExperience": 7,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Experienced in large household management"
+  },
+  {
+    "id": "n2Jc4BZdtLODXlq6VwM5_",
+    "name": "Nakato Kintu",
+    "age": 25,
+    "nationality": "Uganda",
+    "etaDays": 15,
+    "hasExperience": false,
+    "photos": [
+      "/maids/placeholder.svg"
+    ],
+    "notes": "Fast learner and reliable"
+  }
+]
