@@ -499,7 +499,7 @@ export default function Home() {
                 className="flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-3xl bg-white border border-gray-200 shadow-md shadow-primary-900/15 hover:bg-primary-50 transition-colors overflow-hidden"
               >
                 <Image
-                  src="/externalcoop/musaned-logo.png"
+                  src="/Externalcoop/musaned-logo.png"
                   alt="Musaned logo"
                   width={80}
                   height={80}
