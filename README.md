@@ -2,6 +2,8 @@
 
 A production-quality, locally-runnable recruitment website for domestic help services in Saudi Arabia.
 
+_Last updated for deployment configuration tweaks._
+
 ## Tech Stack
 
 - **Next.js 14** (App Router) + TypeScript
