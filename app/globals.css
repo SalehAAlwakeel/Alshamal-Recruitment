@@ -4,23 +4,42 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
+  /* Use the same deep purple tones as the hero / primary background */
+  --background-start-rgb: 7, 7, 51; /* approx primary-900 (#070733) */
+  --background-end-rgb: 19, 19, 102; /* approx primary-700 (#131366) */
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Nicer horizontal scrollbar for countries strip */
+  .countries-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  }
+
+  .countries-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .countries-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .countries-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 9999px;
+  }
+
+  .countries-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 

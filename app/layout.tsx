@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import AppBackground from "@/components/AppBackground";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en" dir="ltr">
       <body className={inter.className}>
         <LanguageProvider>
+          <AppBackground />
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />

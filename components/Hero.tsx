@@ -1,19 +1,52 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+type AnimatedCounterProps = {
+  target: number;
+  language: "en" | "ar";
+};
+
+function AnimatedCounter({ target, language }: AnimatedCounterProps) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.4 });
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    const duration = 1200;
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const value = Math.round(target * progress);
+      setCurrent(value);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  }, [isInView, target]);
+
+  const formatted = current.toLocaleString(
+    language === "ar" ? "ar-SA" : "en-US"
+  );
+
+  return <span ref={ref}>{formatted}</span>;
+}
+
 export default function Hero() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
-    <section className="relative overflow-hidden text-white py-20 lg:py-24">
-      {/* Animated background layers */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary-700 via-primary-800 to-primary-900 opacity-80" />
-      <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-primary-400/25 blur-3xl animate-float-slow" />
-      <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-primary-300/20 blur-3xl animate-float-slower" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.16),_transparent_55%)]" />
+    <section className="relative overflow-hidden text-white pt-24 lg:pt-28 pb-10 lg:pb-8 min-h-screen flex items-center">
+      {/* Background handled by global AppBackground */}
 
       {/* Content */}
       <div className="relative container mx-auto px-4">
@@ -26,10 +59,10 @@ export default function Hero() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight"
             >
-              <span className="block text-primary-100/90">
+              <span className="block text-primary-200">
                 {t.home.heroTitle.split(" ").slice(0, 3).join(" ")}
               </span>
-              <span className="block text-primary-200">
+              <span className="block text-primary-300">
                 {t.home.heroTitle.split(" ").slice(3).join(" ")}
               </span>
             </motion.h1>
@@ -38,7 +71,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-lg md:text-xl text-primary-100/90 max-w-xl mx-auto lg:mx-0"
+              className="text-lg md:text-xl text-primary-200/90 max-w-xl mx-auto lg:mx-0"
             >
               {t.home.heroSubtitle}
             </motion.p>
@@ -55,7 +88,7 @@ export default function Hero() {
               >
                 {t.home.heroButton}
               </Link>
-              <span className="text-sm md:text-base text-primary-100/80">
+              <span className="text-sm md:text-base text-primary-200/80">
                 {t.home.heroTagline}
               </span>
             </motion.div>
@@ -68,35 +101,39 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="relative"
           >
-            <div className="mx-auto max-w-md rounded-3xl bg-white/95 backdrop-blur-sm p-6 shadow-2xl shadow-primary-950/40 ring-1 ring-primary-100">
-              <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="relative mx-auto max-w-md overflow-hidden rounded-3xl bg-primary-800/80 backdrop-blur-sm p-6 shadow-2xl shadow-black/70 ring-1 ring-primary-700/70">
+              <div className="relative mb-4 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-500">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-50/90">
                     {t.home.heroBadgeLabel}
                   </p>
-                  <p className="mt-1 text-lg font-bold text-primary-900">
+                  <p className="mt-1 text-lg font-bold text-white">
                     {t.home.heroCardTitle}
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 text-primary-700 font-extrabold text-lg">
-                  SR
-                </div>
+                <Image
+                  src="/logo.jpg"
+                  alt="Shamal Recruitment logo"
+                  width={48}
+                  height={48}
+                  className="rounded-full border border-primary-100 shadow-md shadow-primary-900/30"
+                />
               </div>
 
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="rounded-2xl bg-primary-50/80 px-4 py-3">
-                  <p className="text-xs font-medium text-primary-500">
+              <div className="relative grid grid-cols-2 gap-4 text-sm">
+                <div className="rounded-2xl bg-white/10 px-4 py-3">
+                  <p className="text-xs font-medium text-primary-50/90">
                     {t.home.heroExperienceLabel}
                   </p>
-                  <p className="mt-1 text-xl font-extrabold text-primary-900">
+                  <p className="mt-1 text-xl font-extrabold text-white">
                     {t.home.heroExperienceYears}
                   </p>
-                  <p className="text-xs text-primary-700/80">
+                  <p className="text-xs text-primary-100/90">
                     {t.home.heroExperienceBody}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-primary-900 text-primary-50 px-4 py-3">
-                  <p className="text-xs font-medium text-primary-200">
+                <div className="rounded-2xl bg-primary-900/90 text-primary-50 px-4 py-3">
+                  <p className="text-xs font-medium text-primary-100/90">
                     {t.home.heroCandidatesLabel}
                   </p>
                   <p className="mt-1 text-xl font-extrabold text-white">
@@ -106,12 +143,71 @@ export default function Hero() {
                     {t.home.heroCandidatesBody}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-primary-100/80 px-4 py-3 col-span-2">
-                  <p className="text-xs font-medium text-primary-700">
+                <div className="rounded-2xl bg-white/10 px-4 py-3 col-span-2">
+                  <p className="text-xs font-medium text-primary-50/90">
                     {t.home.heroRegionLabel}
                   </p>
-                  <p className="mt-1 text-sm text-primary-900">
+                  <p className="mt-1 text-sm text-primary-100/90">
                     {t.home.heroRegionBody}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Stats bar under hero */}
+        <div className="mt-10 md:mt-14 mb-3 md:mb-4">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className=""
+          >
+            <div className="relative overflow-hidden rounded-3xl bg-primary-800/80 p-6 md:p-8 shadow-2xl shadow-black/70 ring-1 ring-primary-700/70">
+              <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-center text-white">
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-sm md:text-base text-white/90">
+                    {t.home.statsItem1Label}
+                  </p>
+                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
+                    <AnimatedCounter
+                      target={t.home.statsItem1Value}
+                      language={language}
+                    />
+                  </p>
+                </div>
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-sm md:text-base text-white/90">
+                    {t.home.statsItem2Label}
+                  </p>
+                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
+                    <AnimatedCounter
+                      target={t.home.statsItem2Value}
+                      language={language}
+                    />
+                  </p>
+                </div>
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-sm md:text-base text-white/90">
+                    {t.home.statsItem3Label}
+                  </p>
+                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
+                    <AnimatedCounter
+                      target={t.home.statsItem3Value}
+                      language={language}
+                    />
+                  </p>
+                </div>
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-sm md:text-base text-white/90">
+                    {t.home.statsItem4Label}
+                  </p>
+                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
+                    <AnimatedCounter
+                      target={t.home.statsItem4Value}
+                      language={language}
+                    />
                   </p>
                 </div>
               </div>
