@@ -152,7 +152,7 @@ export default function Home() {
     {
       name: "Noura Alfawaz",
       text:
-        "الاستقبال والتعامل مع الاخ ايمن رائع جدًا وعدوني ان العامله بتوصل خلال شهر وفعلًا جتني خلال شهر و ٥ ايام كل الشكر لهم جميعًا",
+        "اول تجربة والله وان شاءالله يعتمد هالمكتب انا واختي قدمنا عن طريقهم والعاملة وصلت لنا بعد شهر بالضبط\n\nخدمة العملاء ممتازة ومتجاوبين الله يجزاهم خير، والعاملة للحين امورها زينة معنا الله يتمم لنا ولكم كل خير 🙏🏼",
     },
     {
       name: "سعود عبدالله",
@@ -244,7 +244,7 @@ export default function Home() {
                 <h2 className="text-3xl md:text-4xl font-extrabold text-white">
                   {t.home.title}
                 </h2>
-                <div className="relative h-10 w-10 md:h-12 md:w-12 rounded-full bg-white/5 border border-primary-200/60 overflow-hidden">
+                <div className="relative h-10 w-10 md:h-12 md:w-12 rounded-full bg-white/5 border border-primary-200/60 overflow-hidden hidden md:block">
                   <Image
                     src="/logo.jpg"
                     alt={t.officeName}
