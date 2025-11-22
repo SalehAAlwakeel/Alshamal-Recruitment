@@ -137,6 +137,25 @@ export default function RequirementsPage() {
             </div>
           </div>
 
+          {/* Partner ministries logos */}
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8 md:grid-cols-4">
+            {["c1.png", "c2.png", "c3.png", "c4.png"].map((file) => (
+              <div
+                key={file}
+                className="flex items-center justify-center rounded-3xl bg-white/98 px-4 py-6 md:px-6 md:py-8"
+              >
+                <div className="relative w-full max-w-[140px] sm:max-w-[170px] md:max-w-[220px] aspect-[4/3]">
+                  <Image
+                    src={`/Ministries/${file}`}
+                    alt={file}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Requirements explanatory video */}
           <div className="max-w-4xl mx-auto">
             <div className="mb-4 text-center">

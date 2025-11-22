@@ -236,20 +236,13 @@ export default function InquiryModal({ isOpen, onClose, maidId }: InquiryModalPr
                       </div>
                     )}
 
-                    <div className="flex gap-4 pt-4">
+                    <div className="pt-4">
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="w-full bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? t.inquire.submitting : t.inquire.submit}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={onClose}
-                        className="px-8 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-                      >
-                        {t.inquire.cancel}
                       </button>
                     </div>
                   </form>

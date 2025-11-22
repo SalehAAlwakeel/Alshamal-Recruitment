@@ -29,13 +29,27 @@ export default function ImageLightbox({
   const { t } = useLanguage();
 
   useEffect(() => {
+    const header = document.querySelector("header") as HTMLElement | null;
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      if (header) {
+        header.style.opacity = "0";
+        header.style.pointerEvents = "none";
+      }
     } else {
       document.body.style.overflow = "unset";
+      if (header) {
+        header.style.opacity = "";
+        header.style.pointerEvents = "";
+      }
     }
     return () => {
       document.body.style.overflow = "unset";
+      if (header) {
+        header.style.opacity = "";
+        header.style.pointerEvents = "";
+      }
     };
   }, [isOpen]);
 
@@ -72,7 +86,7 @@ export default function ImageLightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center"
+          className="fixed inset-0 z-[9999] bg-black bg-opacity-100 flex items-center justify-center"
           onClick={onClose}
         >
           {/* Close button */}

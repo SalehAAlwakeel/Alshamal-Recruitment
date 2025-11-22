@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import Hero from "@/components/Hero";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -68,6 +68,11 @@ export default function Home() {
       active: false,
     },
   ];
+
+  // Sort countries: available (active) first, then unavailable
+  const sortedCountries = [...countries].sort((a, b) =>
+    a.active === b.active ? 0 : a.active ? -1 : 1
+  );
 
   const countriesScrollRef = useRef<HTMLDivElement | null>(null);
   const isHoveringCountries = useRef(false);
@@ -138,6 +143,32 @@ export default function Home() {
     },
   ];
 
+  const reviews = [
+    {
+      name: "Danah S",
+      text:
+        "الاستقبال والتعامل مع الاخ ايمن رائع جدًا وعدوني ان العامله بتوصل خلال شهر وفعلًا جتني خلال شهر و ٥ ايام كل الشكر لهم جميعًا",
+    },
+    {
+      name: "Noura Alfawaz",
+      text:
+        "الاستقبال والتعامل مع الاخ ايمن رائع جدًا وعدوني ان العامله بتوصل خلال شهر وفعلًا جتني خلال شهر و ٥ ايام كل الشكر لهم جميعًا",
+    },
+    {
+      name: "سعود عبدالله",
+      text:
+        "خدمه ممتازه وصلتني العامله بالوقت المحدد لي، اخص بالشكر الاخ ايمن تعامل واسلوب اكثر من رائع 👍👍👍",
+    },
+    {
+      name: "Wafa Als",
+      text:
+        "فعلاً مكتب قمة في المهنية والاحتراف\n\nتعامل محترم مع العميل ومتابعة مستمرة ورد سريع على استفسارات العميل، شاكرة لكم.",
+    },
+  ];
+
+  const [requirementsSlide, setRequirementsSlide] = useState(0);
+  const [currentReview, setCurrentReview] = useState(0);
+
   // Auto-scroll countries row: every 3s move one card to the right, loop forever
   useEffect(() => {
     const container = countriesScrollRef.current;
@@ -174,6 +205,22 @@ export default function Home() {
     }, 3000);
 
     return () => window.clearInterval(intervalId);
+  }, []);
+
+  // Auto-advance requirements slider every 4 seconds
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setRequirementsSlide((prev) => (prev + 1) % 2);
+    }, 4000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  // Auto-advance reviews slider every 6 seconds
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setCurrentReview((prev) => (prev + 1) % reviews.length);
+    }, 6000);
+    return () => window.clearInterval(id);
   }, []);
 
   return (
@@ -272,7 +319,7 @@ export default function Home() {
             }}
             className="countries-scroll flex gap-6 md:gap-8 overflow-x-auto pb-2"
           >
-            {countries.map((country) => {
+            {sortedCountries.map((country) => {
               const name =
                 language === "ar" ? country.nameAr : country.nameEn;
               const isActive = country.active;
@@ -285,7 +332,7 @@ export default function Home() {
                     boxShadow: "0 24px 60px rgba(7, 7, 51, 0.65)",
                   }}
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative overflow-hidden rounded-3xl bg-primary-800/80 p-6 md:p-7 shadow-md border border-primary-700/70 cursor-pointer min-w-[220px] sm:min-w-[240px] md:min-w-[260px] ${
+                  className={`group relative overflow-hidden rounded-3xl bg-primary-800/80 p-6 md:p-7 border border-primary-700/70 shadow-lg shadow-black/50 cursor-pointer min-w-[220px] sm:min-w-[240px] md:min-w-[260px] ${
                     isActive ? "" : "opacity-70"
                   }`}
                 >
@@ -361,7 +408,7 @@ export default function Home() {
             {steps.map((step) => (
               <div
                 key={step.number}
-                className="relative overflow-hidden rounded-2xl bg-primary-800/80 p-6 shadow-xl shadow-black/60 border border-primary-700/70"
+                className="relative overflow-hidden rounded-2xl bg-primary-800/80 p-6 border-2 border-primary-400/60 shadow-[0_0_18px_rgba(56,189,248,0.2)]"
               >
                 <div className="flex items-center justify-center mb-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-primary-50 text-sm font-extrabold">
@@ -380,7 +427,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recruitment requirements section */}
+      {/* Recruitment requirements section (slider style) */}
       <section className="py-16 lg:py-20 bg-gradient-to-b from-primary-900 via-primary-900/95 to-primary-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
@@ -392,87 +439,122 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-2">
-            {/* Documents card */}
-            <div className="relative overflow-hidden rounded-[32px] bg-primary-800/80 border border-primary-600/70 shadow-xl shadow-black/40 px-6 py-8 md:px-10 md:py-10 text-primary-50">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl md:text-2xl font-extrabold">
-                  {t.home.requirementsDocsTitle}
-                </h3>
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-600/90 text-white shadow-md">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path d="M7 2a2 2 0 0 0-2 2v16l7-3 7 3V4a2 2 0 0 0-2-2H7z" />
-                  </svg>
-                </div>
-              </div>
-              <p className="mb-4 text-sm md:text-base">
-                {language === "ar"
-                  ? "لتقديم طلب إصدار تأشيرة الاستقدام عبر برنامج مساند، تأكد من توفر ما يلي:"
-                  : "To request a recruitment visa through Musaned, make sure you have:"}
-              </p>
-              <ul className="space-y-2 text-sm md:text-base leading-relaxed list-decimal list-inside">
-                <li>
-                  {language === "ar"
-                    ? "الهوية الوطنية أو الإقامة للمقيمين."
-                    : "National ID (for citizens) or residence permit (for residents)."}
-                </li>
-                <li>
-                  {language === "ar"
-                    ? "تعريف بالراتب من جهة العمل أو كشف حساب بنكي يثبت القدرة المالية."
-                    : "Salary certificate from employer or bank statement proving financial capability."}
-                </li>
-                <li>
-                  {language === "ar"
-                    ? "بيانات عقد الاستقدام عبر مساند وسداد الرسوم المطلوبة."
-                    : "Musaned recruitment contract details and proof of fee payment."}
-                </li>
-              </ul>
-            </div>
+          <div className="max-w-5xl mx-auto">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={requirementsSlide}
+                initial={{ opacity: 0, x: language === "ar" ? 40 : -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: language === "ar" ? -40 : 40 }}
+                transition={{ duration: 0.45 }}
+              >
+                {requirementsSlide === 0 ? (
+                  <div className="relative overflow-hidden rounded-[32px] bg-primary-800/80 border-2 border-primary-400/60 shadow-[0_0_20px_rgba(56,189,248,0.22)] px-6 py-8 md:px-10 md:py-10 text-primary-50">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl md:text-2xl font-extrabold">
+                        {t.home.requirementsDocsTitle}
+                      </h3>
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-600/90 text-white shadow-md">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h-5 w-5"
+                        >
+                          <path d="M7 2a2 2 0 0 0-2 2v16l7-3 7 3V4a2 2 0 0 0-2-2H7z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="mb-4 text-sm md:text-base">
+                      {language === "ar"
+                        ? "لتقديم طلب إصدار تأشيرة الاستقدام عبر برنامج مساند، تأكد من توفر ما يلي:"
+                        : "To request a recruitment visa through Musaned, make sure you have:"}
+                    </p>
+                    <ul className="space-y-2 text-sm md:text-base leading-relaxed list-decimal list-inside">
+                      <li>
+                        {language === "ar"
+                          ? "الهوية الوطنية أو الإقامة للمقيمين."
+                          : "National ID (for citizens) or residence permit (for residents)."}
+                      </li>
+                      <li>
+                        {language === "ar"
+                          ? "تعريف بالراتب من جهة العمل أو كشف حساب بنكي يثبت القدرة المالية."
+                          : "Salary certificate from employer or bank statement proving financial capability."}
+                      </li>
+                      <li>
+                        {language === "ar"
+                          ? "بيانات عقد الاستقدام عبر مساند وسداد الرسوم المطلوبة."
+                          : "Musaned recruitment contract details and proof of fee payment."}
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <div className="relative overflow-hidden rounded-[32px] bg-primary-800/80 border-2 border-primary-400/60 shadow-[0_0_20px_rgba(56,189,248,0.22)] px-6 py-8 md:px-10 md:py-10 text-primary-50">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl md:text-2xl font-extrabold">
+                        {t.home.requirementsVisaTitle}
+                      </h3>
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-600/90 text-white shadow-md">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h-5 w-5"
+                        >
+                          <path d="M4 4h16v4H4zm0 6h16v4H4zm0 6h10v4H4z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="mb-4 text-sm md:text-base">
+                      {language === "ar"
+                        ? "خطوات إصدار التأشيرة عبر منصة مساند:"
+                        : "Steps to issue the visa through Musaned:"}
+                    </p>
+                    <ul className="space-y-2 text-sm md:text-base leading-relaxed list-decimal list-inside">
+                      <li>
+                        {language === "ar"
+                          ? "الدخول إلى منصة مساند بحسابك وتعبئة بيانات الطلب واختيار الدولة والمهنة."
+                          : "Log in to Musaned, fill in the request details, and choose the country and profession."}
+                      </li>
+                      <li>
+                        {language === "ar"
+                          ? "التحقق من صحة البيانات وإرفاق المستندات المطلوبة."
+                          : "Verify your information and upload the required documents."}
+                      </li>
+                      <li>
+                        {language === "ar"
+                          ? "الإقرار بالمعلومات الصحيحة وسداد الرسوم لإصدار التأشيرة إلكترونياً."
+                          : "Confirm the information, pay the fees, and issue the visa electronically."}
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
 
-            {/* Visa card */}
-            <div className="relative overflow-hidden rounded-[32px] bg-primary-800/80 border border-primary-600/70 shadow-xl shadow-black/40 px-6 py-8 md:px-10 md:py-10 text-primary-50">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl md:text-2xl font-extrabold">
-                  {t.home.requirementsVisaTitle}
-                </h3>
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-600/90 text-white shadow-md">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path d="M4 4h16v4H4zm0 6h16v4H4zm0 6h10v4H4z" />
-                  </svg>
-                </div>
-              </div>
-              <p className="mb-4 text-sm md:text-base">
-                {language === "ar"
-                  ? "خطوات إصدار التأشيرة عبر منصة مساند:"
-                  : "Steps to issue the visa through Musaned:"}
-              </p>
-              <ul className="space-y-2 text-sm md:text-base leading-relaxed list-decimal list-inside">
-                <li>
-                  {language === "ar"
-                    ? "الدخول إلى منصة مساند بحسابك وتعبئة بيانات الطلب واختيار الدولة والمهنة."
-                    : "Log in to Musaned, fill in the request details, and choose the country and profession."}
-                </li>
-                <li>
-                  {language === "ar"
-                    ? "التحقق من صحة البيانات وإرفاق المستندات المطلوبة."
-                    : "Verify your information and upload the required documents."}
-                </li>
-                <li>
-                  {language === "ar"
-                    ? "الإقرار بالمعلومات الصحيحة وسداد الرسوم لإصدار التأشيرة إلكترونياً."
-                    : "Confirm the information, pay the fees, and issue the visa electronically."}
-                </li>
-              </ul>
+            {/* Slider dots */}
+            <div className="mt-6 flex justify-center gap-2">
+              {[0, 1].map((idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setRequirementsSlide(idx)}
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                    requirementsSlide === idx
+                      ? "bg-primary-400"
+                      : "bg-primary-700/50"
+                  }`}
+                  aria-label={
+                    language === "ar"
+                      ? idx === 0
+                        ? "الوثائق المطلوبة"
+                        : "خطوات إصدار التأشيرة"
+                      : idx === 0
+                      ? "Required documents"
+                      : "Visa steps"
+                  }
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -482,7 +564,7 @@ export default function Home() {
           <section className="pt-8 pb-16 lg:pt-10 lg:pb-20 bg-gradient-to-b from-primary-900 via-primary-900/95 to-primary-900">
             <div className="container mx-auto px-4 space-y-16">
               {/* Musaned card */}
-              <div className="relative overflow-hidden rounded-[40px] bg-primary-800/80 shadow-xl shadow-black/60 border border-primary-700/70 px-6 py-10 md:px-12 md:py-12 flex flex-col md:flex-row items-center justify-between gap-10">
+              <div className="relative overflow-hidden rounded-[40px] bg-primary-800/80 border-2 border-primary-400/60 shadow-[0_0_22px_rgba(56,189,248,0.24)] px-6 py-10 md:px-12 md:py-12 flex flex-col md:flex-row items-center justify-between gap-10">
             <div className="space-y-4 max-w-2xl">
               <h2 className="text-2xl md:text-3xl font-extrabold text-white">
                 {t.home.musanedTitle}
@@ -511,22 +593,188 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Office location map */}
-      <section className="pt-10 pb-16 lg:pt-12 lg:pb-20">
+      {/* Partner ministries logos */}
+      <section className="pt-4 pb-12 lg:pt-6 lg:pb-14">
         <div className="container mx-auto px-4">
-          <div className="overflow-hidden rounded-3xl border border-primary-900/40 shadow-2xl h-72 md:h-96">
-            <iframe
-              src="https://www.google.com/maps?q=Floor+2,+6547+Uthman+Ibn+Affan+Branch+Rd,+Al+Izdihar,+Riyadh+12485,+Saudi+Arabia&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8 md:grid-cols-4">
+            {["c1.png", "c2.png", "c3.png", "c4.png"].map((file) => (
+              <div
+                key={file}
+                className="flex items-center justify-center rounded-3xl bg-white/98 px-4 py-6 md:px-6 md:py-8"
+              >
+                <div className="relative w-full max-w-[140px] sm:max-w-[170px] md:max-w-[220px] aspect-[4/3]">
+                  <Image
+                    src={`/Ministries/${file}`}
+                    alt={file}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
-    </div>
+
+      {/* Reviews section */}
+      <section className="pt-6 pb-8 lg:pt-10 lg:pb-10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-2">
+              {language === "ar" ? "آراء عملائنا" : "Our reviews"}
+            </h2>
+            <p className="text-sm md:text-base text-primary-100/90">
+              {language === "ar"
+                ? "بعض تجارب عملائنا مع مكتب الشمال للاستقدام."
+                : "A glimpse of what our clients say about Al Shamal Recruitment."}
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={currentReview}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.45 }}
+                className="relative overflow-hidden rounded-[32px] bg-primary-800/80 border-2 border-primary-400/60 shadow-[0_0_22px_rgba(56,189,248,0.24)] px-6 py-8 md:px-10 md:py-10 text-primary-50"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center rounded-full bg-primary-700/80 text-xs md:text-sm px-3 py-1 font-semibold">
+                      {language === "ar" ? "تقييم العميل" : "Client review"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1 text-amber-300 text-lg md:text-xl">
+                    {Array.from({ length: 5 }).map((_, idx) => (
+                      <span key={idx}>★</span>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-base md:text-lg leading-relaxed whitespace-pre-line mb-6">
+                  “{reviews[currentReview].text}”
+                </p>
+
+                <div className="flex items-center justify-between text-sm md:text-base text-primary-100/90">
+                  <span className="font-semibold">
+                    {reviews[currentReview].name}
+                  </span>
+                  <span className="text-primary-200/80">
+                    {language === "ar" ? "عميل موثوق" : "Verified client"}
+                  </span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="mt-5 flex justify-center gap-2">
+              {reviews.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setCurrentReview(idx)}
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                    currentReview === idx
+                      ? "bg-primary-400"
+                      : "bg-primary-700/60"
+                  }`}
+                  aria-label={
+                    language === "ar"
+                      ? `التقييم رقم ${idx + 1}`
+                      : `Review ${idx + 1}`
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Office location + contact teaser */}
+      <section className="pt-4 pb-16 lg:pt-6 lg:pb-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto mb-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-2">
+              {language === "ar" ? "موقعنا" : "Our location"}
+            </h2>
+            <div className="mx-auto h-1 w-24 bg-gradient-to-r from-primary-400 via-primary-200 to-primary-400 rounded-full" />
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] items-stretch">
+            {/* Map box */}
+            <div
+              className={`overflow-hidden rounded-3xl border-2 border-primary-400/60 shadow-[0_0_18px_rgba(56,189,248,0.2)] h-72 md:h-96 ${
+                language === "ar" ? "order-2 lg:order-2" : "order-1"
+              }`}
+            >
+              <iframe
+                src="https://www.google.com/maps?q=Floor+2,+6547+Uthman+Ibn+Affan+Branch+Rd,+Al+Izdihar,+Riyadh+12485,+Saudi+Arabia&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+
+            {/* Contact teaser box */}
+            <div
+              className={`rounded-3xl bg-primary-800/80 border-2 border-primary-400/60 shadow-[0_0_18px_rgba(56,189,248,0.2)] px-6 py-8 flex flex-col justify-between text-primary-50 ${
+                language === "ar" ? "order-1 lg:order-1" : "order-2"
+              }`}
+            >
+              <div className="space-y-3">
+                <h3 className="text-xl md:text-2xl font-extrabold">
+                  {t.contact.title}
+                </h3>
+                <p className="text-sm md:text-base text-primary-100/90">
+                  {t.contact.subtitle}
+                </p>
+
+                <div className="mt-4 space-y-2 text-sm md:text-base">
+                  <p>
+                    <span className="font-semibold">{t.footer.phone}:</span>{" "}
+                    <a
+                      href="tel:+966552006060"
+                      className="text-primary-200 hover:text-white transition-colors"
+                    >
+                      +966 55 200 6060
+                    </a>
+                  </p>
+                  <p>
+                    <span className="font-semibold">{t.footer.whatsapp}:</span>{" "}
+                    <a
+                      href="https://wa.me/966552006060"
+                      className="text-primary-200 hover:text-white transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      +966 55 200 6060
+                    </a>
+                  </p>
+                  <p className="text-xs md:text-sm text-primary-100/80 mt-3">
+                    {language === "ar"
+                      ? "للاستفسارات التفصيلية أو لحجز موعد، يمكنك أيضاً استخدام نموذج التواصل الكامل في صفحة اتصل بنا."
+                      : "For detailed inquiries or to book a visit, you can also use the full contact form on the Contact Us page."}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-full bg-white text-primary-800 px-6 py-2 text-sm font-semibold shadow-md shadow-primary-900/40 hover:bg-primary-50 transition-colors"
+                >
+                  {t.contact.title}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      </div>
   );
 }
 

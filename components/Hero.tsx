@@ -101,7 +101,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="relative"
           >
-            <div className="relative mx-auto max-w-md overflow-hidden rounded-3xl bg-primary-800/80 backdrop-blur-sm p-6 shadow-2xl shadow-black/70 ring-1 ring-primary-700/70">
+            <div className="relative mx-auto max-w-md overflow-hidden rounded-3xl bg-primary-800/80 backdrop-blur-sm p-6 border-2 border-primary-400/60 shadow-[0_0_20px_rgba(56,189,248,0.22)]">
               <div className="relative mb-4 flex items-center justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-50/90">
@@ -164,7 +164,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.5 }}
             className=""
           >
-            <div className="relative overflow-hidden rounded-3xl bg-primary-800/80 p-6 md:p-8 shadow-2xl shadow-black/70 ring-1 ring-primary-700/70">
+            <div className="relative overflow-hidden rounded-3xl bg-primary-800/80 p-6 md:p-8 border-2 border-primary-400/60 shadow-[0_0_20px_rgba(56,189,248,0.22)]">
               <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-center text-white">
                 <div className="space-y-1 md:space-y-2">
                   <p className="text-sm md:text-base text-white/90">

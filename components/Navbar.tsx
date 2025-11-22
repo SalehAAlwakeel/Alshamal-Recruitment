@@ -3,12 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-40">
@@ -37,30 +39,35 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop nav links centered */}
-            <div className="hidden md:flex flex-1 items-center justify-center gap-6">
+            <div className="hidden md:flex flex-1 items-center justify-center gap-8">
               <Link
                 href="/"
-                className="text-sm md:text-base font-medium text-white/80 hover:text-white transition-colors"
+                className="px-2 text-sm md:text-base font-medium tracking-wide text-white/80 hover:text-white transition-colors"
               >
                 {t.nav.home}
               </Link>
               <Link
                 href="/maids"
-                className="text-sm md:text-base font-medium text-white/80 hover:text-white transition-colors"
+                className="px-2 text-sm md:text-base font-medium tracking-wide text-white/80 hover:text-white transition-colors"
               >
                 {t.nav.browseMaids}
               </Link>
               <Link
                 href="/requirements"
-                className="text-sm md:text-base font-medium text-white/80 hover:text-white transition-colors"
+                className="px-2 text-sm md:text-base font-medium tracking-wide text-white/80 hover:text-white transition-colors"
               >
                 {t.nav.requirements}
               </Link>
               <Link
                 href="/contact"
-                className="text-sm md:text-base font-medium text-white/80 hover:text-white transition-colors"
+                className="relative px-2 text-sm md:text-base font-medium tracking-wide text-white/80 hover:text-white transition-colors group"
               >
-                {t.nav.contactUs}
+                <span>{t.nav.contactUs}</span>
+                <span
+                  className={`pointer-events-none absolute -bottom-1 left-1/2 h-[2px] -translate-x-1/2 bg-primary-300 rounded-full transition-all duration-300 w-0 group-hover:w-10 ${
+                    pathname === "/contact" ? "w-10" : ""
+                  }`}
+                />
               </Link>
             </div>
 

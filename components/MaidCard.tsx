@@ -18,6 +18,11 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
 
+  // Display ID in the form "ID 0001" instead of "MAID0001"
+  const displayId = maidDisplayId.startsWith("MAID")
+    ? `ID ${maidDisplayId.replace("MAID", "")}`
+    : `ID ${maidDisplayId}`;
+
   const handleImageClick = () => {
     if (maid.photos.length > 0) {
       setCurrentImageIndex(0);
@@ -27,11 +32,11 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="bg-primary-800/80 rounded-3xl border border-primary-700/70 shadow-xl overflow-hidden hover:shadow-2xl transition-shadow text-primary-50">
         {/* Maid ID at the top */}
-        <div className="bg-primary-50 px-4 py-2 border-b border-primary-100">
-          <p className="text-sm font-mono font-semibold text-primary-700">
-            {maidDisplayId}
+        <div className="bg-primary-900/70 px-4 py-2 border-b border-primary-700/80">
+          <p className="text-sm font-mono font-semibold text-white/90">
+            {displayId}
           </p>
         </div>
         
@@ -57,7 +62,7 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
         <div className="p-4">
           <button
             onClick={() => setInquiryModalOpen(true)}
-            className="block w-full bg-primary-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+            className="block w-full bg-white text-primary-800 text-center px-4 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-colors shadow-md shadow-primary-900/30"
           >
             {t.maids.inquire}
           </button>
@@ -70,7 +75,7 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
         onNavigate={setCurrentImageIndex}
-        maidId={maidDisplayId}
+        maidId={displayId}
         maidName={maid.name}
         onInquire={() => {
           setLightboxOpen(false);
@@ -81,7 +86,7 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
       <InquiryModal
         isOpen={inquiryModalOpen}
         onClose={() => setInquiryModalOpen(false)}
-        maidId={maidDisplayId}
+        maidId={displayId}
       />
     </>
   );
