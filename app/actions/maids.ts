@@ -48,14 +48,7 @@ async function saveImage(file: File): Promise<string> {
 
 export async function createMaidAction(formData: FormData) {
   try {
-    const name = formData.get("name") as string;
-    const age = parseInt(formData.get("age") as string);
     const nationality = formData.get("nationality") as string;
-    const etaDays = parseInt(formData.get("etaDays") as string);
-    const hasExperience = formData.get("hasExperience") === "true";
-    const yearsExperience = formData.get("yearsExperience")
-      ? parseInt(formData.get("yearsExperience") as string)
-      : undefined;
     const notes = (formData.get("notes") as string) || undefined;
 
     // Handle photo uploads
@@ -78,17 +71,19 @@ export async function createMaidAction(formData: FormData) {
       }
     }
 
-    if (hasExperience && !yearsExperience) {
-      throw new Error("Years of experience is required when experience is Yes");
+    if (!nationality) {
+      throw new Error("Nationality is required");
     }
 
+    // We now auto-generate all other maid details.
+    // Admin only chooses nationality and uploads photos.
     const maidData = {
-      name,
-      age,
+      name: "Maid",
+      age: 30,
       nationality,
-      etaDays,
-      hasExperience,
-      yearsExperience: hasExperience ? yearsExperience : undefined,
+      etaDays: 30,
+      hasExperience: false,
+      yearsExperience: undefined,
       photos,
       notes,
     };

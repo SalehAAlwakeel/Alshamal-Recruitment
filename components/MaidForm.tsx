@@ -178,161 +178,42 @@ export default function MaidForm({ maid, allMaids = [], onSuccess, onCancel }: M
               </div>
             )}
 
-            {/* Show all fields for new maids */}
-            {!maid && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Age <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.age}
-                    onChange={(e) =>
-                      setFormData({ ...formData, age: e.target.value })
-                    }
-                    min="21"
-                    max="55"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nationality <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={formData.nationality}
-                    onChange={(e) =>
-                      setFormData({ ...formData, nationality: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    required
-                  >
-                    <option value="">Select...</option>
-                    {NATIONALITIES.map((nat) => (
-                      <option key={nat} value={nat}>
-                        {nat}
-                      </option>
-                    ))}
-                  </select>
-                  {formData.nationality === "Other" && (
-                    <input
-                      type="text"
-                      value={formData.customNationality}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          customNationality: e.target.value,
-                        })
-                      }
-                      placeholder="Enter nationality"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent mt-2"
-                      required
-                    />
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ETA (days) <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.etaDays}
-                    onChange={(e) =>
-                      setFormData({ ...formData, etaDays: e.target.value })
-                    }
-                    min="1"
-                    max="60"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Has Experience <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={formData.hasExperience === true}
-                        onChange={() =>
-                          setFormData({ ...formData, hasExperience: true })
-                        }
-                        className="mr-2"
-                      />
-                      Yes
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={formData.hasExperience === false}
-                        onChange={() =>
-                          setFormData({ ...formData, hasExperience: false })
-                        }
-                        className="mr-2"
-                      />
-                      No
-                    </label>
-                  </div>
-                </div>
-
-                {formData.hasExperience && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Years of Experience <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.yearsExperience}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          yearsExperience: e.target.value,
-                        })
-                      }
-                      min="1"
-                      max="15"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      required
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Notes
-                  </label>
-                  <textarea
-                    value={formData.notes}
-                    onChange={(e) =>
-                      setFormData({ ...formData, notes: e.target.value })
-                    }
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-              </>
-            )}
+            {/* Nationality (for both new and existing maids) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nationality <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={formData.nationality}
+                onChange={(e) =>
+                  setFormData({ ...formData, nationality: e.target.value })
+                }
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                required
+              >
+                <option value="">Select...</option>
+                {NATIONALITIES.map((nat) => (
+                  <option key={nat} value={nat}>
+                    {nat}
+                  </option>
+                ))}
+              </select>
+              {formData.nationality === "Other" && (
+                <input
+                  type="text"
+                  value={formData.customNationality}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      customNationality: e.target.value,
+                    })
+                  }
+                  placeholder="Enter nationality"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent mt-2"
+                  required
+                />
+              )}
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
