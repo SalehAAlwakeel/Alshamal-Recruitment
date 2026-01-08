@@ -1,7 +1,6 @@
 "use server";
 
 import { nanoid } from "nanoid";
-import { promises as fs } from "fs";
 import path from "path";
 import { revalidatePath } from "next/cache";
 import {
@@ -14,6 +13,7 @@ import {
 import { maidSchema } from "@/lib/validation";
 import type { Maid } from "@/types/maid";
 import { generateNextMaidId } from "@/lib/utils";
+import { supabaseAdmin, SUPABASE_STORAGE_BUCKET } from "@/lib/supabaseAdmin";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -25,7 +25,7 @@ function sanitizeFilename(filename: string): string {
     .toLowerCase();
 }
 
-async function saveImage(file: File): Promise<string> {
+async function uploadImageToSupabase(file: File): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
@@ -36,20 +36,39 @@ async function saveImage(file: File): Promise<string> {
   const ext = path.extname(file.name) || ".jpg";
   const sanitized = sanitizeFilename(path.basename(file.name, ext));
   const filename = `${sanitized}_${nanoid(8)}${ext}`;
-  const filepath = path.join(process.cwd(), "public", "maids", filename);
+  const objectPath = `maids/${filename}`;
 
-  // Ensure directory exists
-  const dir = path.dirname(filepath);
-  await fs.mkdir(dir, { recursive: true });
+  const { error } = await supabaseAdmin.storage
+    .from(SUPABASE_STORAGE_BUCKET)
+    .upload(objectPath, buffer, {
+      contentType: file.type || "image/jpeg",
+      upsert: false,
+    });
 
-  await fs.writeFile(filepath, buffer);
-  return `/maids/${filename}`;
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { data } = supabaseAdmin.storage
+    .from(SUPABASE_STORAGE_BUCKET)
+    .getPublicUrl(objectPath);
+
+  return data.publicUrl;
+}
+
+function extractStorageObjectPath(publicUrl: string): string | null {
+  // Expected format:
+  // https://<project>.supabase.co/storage/v1/object/public/<bucket>/<path>
+  const marker = `/storage/v1/object/public/${SUPABASE_STORAGE_BUCKET}/`;
+  const idx = publicUrl.indexOf(marker);
+  if (idx === -1) return null;
+  return publicUrl.slice(idx + marker.length);
 }
 
 export async function createMaidAction(formData: FormData) {
   try {
     const nationality = formData.get("nationality") as string;
-    const notes = (formData.get("notes") as string) || undefined;
+    const notes = undefined;
 
     // Handle photo uploads
     const photoFiles = formData.getAll("photos") as File[];
@@ -66,7 +85,7 @@ export async function createMaidAction(formData: FormData) {
             `Invalid file type: ${file.type}. Allowed: jpg, png, webp`
           );
         }
-        const photoPath = await saveImage(file);
+        const photoPath = await uploadImageToSupabase(file);
         photos.push(photoPath);
       }
     }
@@ -95,6 +114,7 @@ export async function createMaidAction(formData: FormData) {
     const maidId = generateNextMaidId(allMaids);
 
     const maid: Maid = {
+      // Not used for DB id (Supabase generates uuid), but kept for type compatibility
       id: nanoid(),
       maidId,
       ...validated,
@@ -111,18 +131,16 @@ export async function createMaidAction(formData: FormData) {
 
 export async function updateMaidAction(id: string, formData: FormData) {
   try {
-    const name = formData.get("name") as string;
-    const age = parseInt(formData.get("age") as string);
     const nationality = formData.get("nationality") as string;
-    const etaDays = parseInt(formData.get("etaDays") as string);
-    const hasExperience = formData.get("hasExperience") === "true";
-    const yearsExperience = formData.get("yearsExperience")
-      ? parseInt(formData.get("yearsExperience") as string)
-      : undefined;
-    const notes = (formData.get("notes") as string) || undefined;
+    const notes = undefined;
     const existingPhotos = JSON.parse(
       (formData.get("existingPhotos") as string) || "[]"
     ) as string[];
+
+    const existingMaid = await getMaidById(id);
+    if (!existingMaid) {
+      throw new Error("Maid not found");
+    }
 
     // Handle new photo uploads
     const photoFiles = formData.getAll("photos") as File[];
@@ -135,7 +153,7 @@ export async function updateMaidAction(id: string, formData: FormData) {
             `Invalid file type: ${file.type}. Allowed: jpg, png, webp`
           );
         }
-        const photoPath = await saveImage(file);
+        const photoPath = await uploadImageToSupabase(file);
         newPhotos.push(photoPath);
       }
     }
@@ -146,17 +164,13 @@ export async function updateMaidAction(id: string, formData: FormData) {
       throw new Error("At least one photo is required");
     }
 
-    if (hasExperience && !yearsExperience) {
-      throw new Error("Years of experience is required when experience is Yes");
-    }
-
     const maidData = {
-      name,
-      age,
+      name: existingMaid.name,
+      age: existingMaid.age,
       nationality,
-      etaDays,
-      hasExperience,
-      yearsExperience: hasExperience ? yearsExperience : undefined,
+      etaDays: existingMaid.etaDays,
+      hasExperience: existingMaid.hasExperience,
+      yearsExperience: existingMaid.yearsExperience,
       photos,
       notes,
     };
@@ -175,6 +189,18 @@ export async function updateMaidAction(id: string, formData: FormData) {
 
 export async function deleteMaidAction(id: string) {
   try {
+    const maid = await getMaidById(id);
+    if (maid?.photos?.length) {
+      const objectPaths = maid.photos
+        .map(extractStorageObjectPath)
+        .filter((p): p is string => Boolean(p));
+      if (objectPaths.length) {
+        await supabaseAdmin.storage
+          .from(SUPABASE_STORAGE_BUCKET)
+          .remove(objectPaths);
+      }
+    }
+
     await deleteMaid(id);
     revalidatePath("/maids");
     revalidatePath("/admin/maids");

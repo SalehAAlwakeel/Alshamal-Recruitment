@@ -27,14 +27,8 @@ const NATIONALITIES = [
 
 export default function MaidForm({ maid, allMaids = [], onSuccess, onCancel }: MaidFormProps) {
   const [formData, setFormData] = useState({
-    name: "",
-    age: "",
     nationality: "",
     customNationality: "",
-    etaDays: "",
-    hasExperience: false,
-    yearsExperience: "",
-    notes: "",
   });
   const [photos, setPhotos] = useState<File[]>([]);
   const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
@@ -45,30 +39,18 @@ export default function MaidForm({ maid, allMaids = [], onSuccess, onCancel }: M
     if (maid) {
       // Keep existing data for submission but don't show in form
       setFormData({
-        name: maid.name,
-        age: maid.age.toString(),
         nationality: NATIONALITIES.includes(maid.nationality)
           ? maid.nationality
           : "Other",
         customNationality:
           NATIONALITIES.includes(maid.nationality) ? "" : maid.nationality,
-        etaDays: maid.etaDays.toString(),
-        hasExperience: maid.hasExperience,
-        yearsExperience: maid.yearsExperience?.toString() || "",
-        notes: maid.notes || "",
       });
       setExistingPhotos(maid.photos);
     } else {
       // For new maids, show all fields
       setFormData({
-        name: "",
-        age: "",
         nationality: "",
         customNationality: "",
-        etaDays: "",
-        hasExperience: false,
-        yearsExperience: "",
-        notes: "",
       });
     }
   }, [maid]);
@@ -80,20 +62,12 @@ export default function MaidForm({ maid, allMaids = [], onSuccess, onCancel }: M
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("age", formData.age);
       formDataToSend.append(
         "nationality",
         formData.nationality === "Other"
           ? formData.customNationality
           : formData.nationality
       );
-      formDataToSend.append("etaDays", formData.etaDays);
-      formDataToSend.append("hasExperience", formData.hasExperience.toString());
-      if (formData.hasExperience) {
-        formDataToSend.append("yearsExperience", formData.yearsExperience);
-      }
-      formDataToSend.append("notes", formData.notes);
 
       if (maid) {
         formDataToSend.append("existingPhotos", JSON.stringify(existingPhotos));
