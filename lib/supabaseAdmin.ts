@@ -1,16 +1,20 @@
 import { createClient } from "@supabase/supabase-js";
 
-function requireEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`${name} is not set`);
+function requireAnyEnv(names: string[]): string {
+  for (const name of names) {
+    const value = process.env[name];
+    if (value) return value;
   }
-  return value;
+  throw new Error(`${names[0]} is not set`);
 }
 
 export const supabaseAdmin = createClient(
-  requireEnv("SUPABASE_URL"),
-  requireEnv("SUPABASE_SERVICE_ROLE_KEY"),
+  requireAnyEnv(["SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL"]),
+  requireAnyEnv([
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_SECRET_KEY",
+    "SUPABASE_SERVICE_KEY",
+  ]),
   {
     auth: {
       persistSession: false,
