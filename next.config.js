@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseUrl =
+  process.env.SUPABASE_URL ||
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  "https://wcthffgiqvtomzhxybct.supabase.co"
 let supabaseHostname = null
 try {
   if (supabaseUrl) supabaseHostname = new URL(supabaseUrl).hostname
