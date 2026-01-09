@@ -1,6 +1,8 @@
 import { getMaids } from "@/lib/data";
 import MaidsClient from "@/components/MaidsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function MaidsPage() {
   const maids = await getMaids();
 

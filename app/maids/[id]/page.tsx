@@ -3,6 +3,8 @@ import { getMaidById, getMaids } from "@/lib/data";
 import { getMaidDisplayId } from "@/lib/utils";
 import MaidDetailContent from "@/components/MaidDetailContent";
 
+export const dynamic = "force-dynamic";
+
 interface MaidDetailPageProps {
   params: Promise<{ id: string }>;
 }

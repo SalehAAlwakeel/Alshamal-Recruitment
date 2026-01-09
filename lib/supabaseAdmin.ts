@@ -8,7 +8,7 @@ function requireAnyEnv(names: string[]): string {
   throw new Error(`${names[0]} is not set`);
 }
 
-let cachedAdminClient: ReturnType<typeof createClient> | null = null;
+let cachedAdminClient: ReturnType<typeof createClient<any>> | null = null;
 
 export function getSupabaseAdmin() {
   // Lazy init so `next build` doesn't crash by evaluating env vars at import-time.
@@ -21,7 +21,9 @@ export function getSupabaseAdmin() {
     "SUPABASE_SERVICE_KEY",
   ]);
 
-  cachedAdminClient = createClient(url, serviceKey, {
+  // Note: we intentionally use `any` here to avoid build-time type errors
+  // without generating Supabase Database types.
+  cachedAdminClient = createClient<any>(url, serviceKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
