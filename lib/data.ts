@@ -1,6 +1,6 @@
 import type { Maid } from "@/types/maid";
 import type { Lead } from "@/types/lead";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 type MaidRow = {
   id: string; // uuid
@@ -33,6 +33,7 @@ function mapRowToMaid(row: MaidRow): Maid {
 
 // Maids operations
 export async function getMaids(): Promise<Maid[]> {
+  const supabaseAdmin = getSupabaseAdmin();
   const { data, error } = await supabaseAdmin
     .from("maids")
     .select("*")
@@ -46,6 +47,7 @@ export async function getMaids(): Promise<Maid[]> {
 }
 
 export async function getMaidById(id: string): Promise<Maid | null> {
+  const supabaseAdmin = getSupabaseAdmin();
   const { data, error } = await supabaseAdmin
     .from("maids")
     .select("*")
@@ -61,6 +63,7 @@ export async function getMaidById(id: string): Promise<Maid | null> {
 }
 
 export async function createMaid(maid: Maid): Promise<void> {
+  const supabaseAdmin = getSupabaseAdmin();
   const { error } = await supabaseAdmin.from("maids").insert({
     maid_id: maid.maidId ?? null,
     name: maid.name,
@@ -79,6 +82,7 @@ export async function createMaid(maid: Maid): Promise<void> {
 }
 
 export async function updateMaid(id: string, maid: Partial<Maid>): Promise<void> {
+  const supabaseAdmin = getSupabaseAdmin();
   const payload: Record<string, any> = {};
   if (maid.maidId !== undefined) payload.maid_id = maid.maidId;
   if (maid.name !== undefined) payload.name = maid.name;
@@ -97,6 +101,7 @@ export async function updateMaid(id: string, maid: Partial<Maid>): Promise<void>
 }
 
 export async function deleteMaid(id: string): Promise<void> {
+  const supabaseAdmin = getSupabaseAdmin();
   const { error } = await supabaseAdmin.from("maids").delete().eq("id", id);
   if (error) {
     throw new Error(error.message);
@@ -105,6 +110,7 @@ export async function deleteMaid(id: string): Promise<void> {
 
 // Leads operations
 export async function getLeads(): Promise<Lead[]> {
+  const supabaseAdmin = getSupabaseAdmin();
   const { data, error } = await supabaseAdmin
     .from("leads")
     .select("*")
@@ -126,6 +132,7 @@ export async function getLeads(): Promise<Lead[]> {
 }
 
 export async function createLead(lead: Lead): Promise<void> {
+  const supabaseAdmin = getSupabaseAdmin();
   const { error } = await supabaseAdmin.from("leads").insert({
     id: lead.id,
     maid_id: lead.maidId,

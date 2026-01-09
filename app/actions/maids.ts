@@ -13,7 +13,7 @@ import {
 import { maidSchema } from "@/lib/validation";
 import type { Maid } from "@/types/maid";
 import { generateNextMaidId } from "@/lib/utils";
-import { supabaseAdmin, SUPABASE_STORAGE_BUCKET } from "@/lib/supabaseAdmin";
+import { getSupabaseAdmin, SUPABASE_STORAGE_BUCKET } from "@/lib/supabaseAdmin";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -26,6 +26,7 @@ function sanitizeFilename(filename: string): string {
 }
 
 async function uploadImageToSupabase(file: File): Promise<string> {
+  const supabaseAdmin = getSupabaseAdmin();
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
@@ -189,6 +190,7 @@ export async function updateMaidAction(id: string, formData: FormData) {
 
 export async function deleteMaidAction(id: string) {
   try {
+    const supabaseAdmin = getSupabaseAdmin();
     const maid = await getMaidById(id);
     if (maid?.photos?.length) {
       const objectPaths = maid.photos
