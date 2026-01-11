@@ -1,48 +1,12 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type AnimatedCounterProps = {
-  target: number;
-  language: "en" | "ar";
-};
-
-function AnimatedCounter({ target, language }: AnimatedCounterProps) {
-  const ref = useRef<HTMLSpanElement | null>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.4 });
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-
-    const duration = 1200;
-    const start = performance.now();
-
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const value = Math.round(target * progress);
-      setCurrent(value);
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
-    };
-
-    requestAnimationFrame(step);
-  }, [isInView, target]);
-
-  const formatted = current.toLocaleString(
-    language === "ar" ? "ar-SA" : "en-US"
-  );
-
-  return <span ref={ref}>{formatted}</span>;
-}
-
 export default function Hero() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <section className="relative overflow-hidden text-white pt-24 lg:pt-28 pb-10 lg:pb-8 min-h-screen flex items-center">
@@ -149,65 +113,6 @@ export default function Hero() {
                   </p>
                   <p className="mt-1 text-sm text-primary-100/90">
                     {t.home.heroRegionBody}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Stats bar under hero */}
-        <div className="mt-10 md:mt-14 mb-3 md:mb-4">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className=""
-          >
-            <div className="relative overflow-hidden rounded-3xl bg-primary-800/80 p-6 md:p-8 border-2 border-primary-400/60 shadow-[0_0_20px_rgba(56,189,248,0.22)]">
-              <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-center text-white">
-                <div className="space-y-1 md:space-y-2">
-                  <p className="text-sm md:text-base text-white/90">
-                    {t.home.statsItem1Label}
-                  </p>
-                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
-                    <AnimatedCounter
-                      target={t.home.statsItem1Value}
-                      language={language}
-                    />
-                  </p>
-                </div>
-                <div className="space-y-1 md:space-y-2">
-                  <p className="text-sm md:text-base text-white/90">
-                    {t.home.statsItem2Label}
-                  </p>
-                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
-                    <AnimatedCounter
-                      target={t.home.statsItem2Value}
-                      language={language}
-                    />
-                  </p>
-                </div>
-                <div className="space-y-1 md:space-y-2">
-                  <p className="text-sm md:text-base text-white/90">
-                    {t.home.statsItem3Label}
-                  </p>
-                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
-                    <AnimatedCounter
-                      target={t.home.statsItem3Value}
-                      language={language}
-                    />
-                  </p>
-                </div>
-                <div className="space-y-1 md:space-y-2">
-                  <p className="text-sm md:text-base text-white/90">
-                    {t.home.statsItem4Label}
-                  </p>
-                  <p className="text-2xl md:text-3xl font-extrabold tracking-wide">
-                    <AnimatedCounter
-                      target={t.home.statsItem4Value}
-                      language={language}
-                    />
                   </p>
                 </div>
               </div>
