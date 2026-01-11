@@ -34,6 +34,12 @@ export default async function AdminMaidsPage() {
               <span className="font-mono"> maids</span> and{" "}
               <span className="font-mono">leads</span> exist.
             </p>
+            <p className="text-primary-100/80 mt-3 text-sm">
+              Quick check: open{" "}
+              <span className="font-mono">/api/debug/env</span> on your site to see
+              which env vars are actually available at runtime (it shows only
+              true/false, no secrets).
+            </p>
           </div>
         </div>
       </section>
