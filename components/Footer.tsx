@@ -6,6 +6,19 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export default function Footer() {
   const { t } = useLanguage();
 
+  const PHONE_NUMBERS = [
+    "+966552006060",
+    "+966591307777",
+    "+966543632000",
+    "+966562019199",
+  ];
+
+  const formatPhone = (e164: string) => {
+    const m = e164.match(/^\+966(\d{2})(\d{3})(\d{4})$/);
+    if (m) return `+966 ${m[1]} ${m[2]} ${m[3]}`;
+    return e164;
+  };
+
   return (
     <footer className="bg-gray-800 text-white mt-12">
       <div className="container mx-auto px-4 py-8">
@@ -39,14 +52,50 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">{t.footer.contactUs}</h3>
             <ul className="space-y-2 text-gray-300">
               <li>
-                <a href="tel:+966552006060" className="hover:text-white transition-colors">
-                  {t.footer.phone}: +966 55 200 6060
-                </a>
+                <div className="flex items-start gap-2">
+                  <span className="font-semibold">{t.footer.phone}:</span>
+                  <div className="flex flex-col gap-1">
+                    {PHONE_NUMBERS.map((e164) => (
+                      <a
+                        key={e164}
+                        href={`tel:${e164}`}
+                        className="hover:text-white transition-colors"
+                      >
+                        <span
+                          dir="ltr"
+                          style={{ unicodeBidi: "plaintext" }}
+                          className="inline-block"
+                        >
+                          {formatPhone(e164)}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </li>
               <li>
-                <a href="https://wa.me/966552006060" className="hover:text-white transition-colors">
-                  {t.footer.whatsapp}: +966 55 200 6060
-                </a>
+                <div className="flex items-start gap-2">
+                  <span className="font-semibold">{t.footer.whatsapp}:</span>
+                  <div className="flex flex-col gap-1">
+                    {PHONE_NUMBERS.map((e164) => (
+                      <a
+                        key={e164}
+                        href={`https://wa.me/${e164.replace("+", "")}`}
+                        className="hover:text-white transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span
+                          dir="ltr"
+                          style={{ unicodeBidi: "plaintext" }}
+                          className="inline-block"
+                        >
+                          {formatPhone(e164)}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </li>
               <li className="mt-4">
                 <p className="text-sm">

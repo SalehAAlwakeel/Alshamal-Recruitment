@@ -8,6 +8,19 @@ export default function ContactPage() {
   const router = useRouter();
   const { t } = useLanguage();
 
+  const PHONE_NUMBERS = [
+    "+966552006060",
+    "+966591307777",
+    "+966543632000",
+    "+966562019199",
+  ];
+
+  const formatPhone = (e164: string) => {
+    const m = e164.match(/^\+966(\d{2})(\d{3})(\d{4})$/);
+    if (m) return `+966 ${m[1]} ${m[2]} ${m[3]}`;
+    return e164;
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -254,24 +267,48 @@ export default function ContactPage() {
               {t.contact.otherWays}
             </h2>
             <div className="space-y-3 text-gray-600">
-              <p>
-                <span className="font-semibold">{t.footer.phone}:</span>{" "}
-                <a
-                  href="tel:+966552006060"
-                  className="text-primary-600 hover:text-primary-700"
-                >
-                  +966 55 200 6060
-                </a>
-              </p>
-              <p>
-                <span className="font-semibold">{t.footer.whatsapp}:</span>{" "}
-                <a
-                  href="https://wa.me/966552006060"
-                  className="text-primary-600 hover:text-primary-700"
-                >
-                  +966 55 200 6060
-                </a>
-              </p>
+              <div className="flex items-start gap-2">
+                <span className="font-semibold">{t.footer.phone}:</span>
+                <div className="flex flex-col gap-1">
+                  {PHONE_NUMBERS.map((e164) => (
+                    <a
+                      key={e164}
+                      href={`tel:${e164}`}
+                      className="text-primary-600 hover:text-primary-700"
+                    >
+                      <span
+                        dir="ltr"
+                        style={{ unicodeBidi: "plaintext" }}
+                        className="inline-block"
+                      >
+                        {formatPhone(e164)}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="font-semibold">{t.footer.whatsapp}:</span>
+                <div className="flex flex-col gap-1">
+                  {PHONE_NUMBERS.map((e164) => (
+                    <a
+                      key={e164}
+                      href={`https://wa.me/${e164.replace("+", "")}`}
+                      className="text-primary-600 hover:text-primary-700"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span
+                        dir="ltr"
+                        style={{ unicodeBidi: "plaintext" }}
+                        className="inline-block"
+                      >
+                        {formatPhone(e164)}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="font-semibold text-gray-800 mb-2">
                   {t.contact.location}:

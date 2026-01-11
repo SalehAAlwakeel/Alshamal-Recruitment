@@ -10,6 +10,19 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export default function Home() {
   const { t, language } = useLanguage();
 
+  const PHONE_NUMBERS = [
+    "+966552006060",
+    "+966591307777",
+    "+966543632000",
+    "+966562019199",
+  ];
+
+  const formatPhone = (e164: string) => {
+    const m = e164.match(/^\+966(\d{2})(\d{3})(\d{4})$/);
+    if (m) return `+966 ${m[1]} ${m[2]} ${m[3]}`;
+    return e164;
+  };
+
   const countries = [
     {
       code: "PH",
@@ -736,26 +749,48 @@ export default function Home() {
                 </p>
 
                 <div className="mt-4 space-y-2 text-sm md:text-base">
-                  <p>
-                    <span className="font-semibold">{t.footer.phone}:</span>{" "}
-                    <a
-                      href="tel:+966552006060"
-                      className="text-primary-200 hover:text-white transition-colors"
-                    >
-                      +966 55 200 6060
-                    </a>
-                  </p>
-                  <p>
-                    <span className="font-semibold">{t.footer.whatsapp}:</span>{" "}
-                    <a
-                      href="https://wa.me/966552006060"
-                      className="text-primary-200 hover:text-white transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      +966 55 200 6060
-                    </a>
-                  </p>
+                  <div className="flex items-start gap-2">
+                    <span className="font-semibold">{t.footer.phone}:</span>
+                    <div className="flex flex-col gap-1">
+                      {PHONE_NUMBERS.map((e164) => (
+                        <a
+                          key={e164}
+                          href={`tel:${e164}`}
+                          className="text-primary-200 hover:text-white transition-colors"
+                        >
+                          <span
+                            dir="ltr"
+                            style={{ unicodeBidi: "plaintext" }}
+                            className="inline-block"
+                          >
+                            {formatPhone(e164)}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-semibold">{t.footer.whatsapp}:</span>
+                    <div className="flex flex-col gap-1">
+                      {PHONE_NUMBERS.map((e164) => (
+                        <a
+                          key={e164}
+                          href={`https://wa.me/${e164.replace("+", "")}`}
+                          className="text-primary-200 hover:text-white transition-colors"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span
+                            dir="ltr"
+                            style={{ unicodeBidi: "plaintext" }}
+                            className="inline-block"
+                          >
+                            {formatPhone(e164)}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                   <p className="text-xs md:text-sm text-primary-100/80 mt-3">
                     {language === "ar"
                       ? "للاستفسارات التفصيلية أو لحجز موعد، يمكنك أيضاً استخدام نموذج التواصل الكامل في صفحة اتصل بنا."
