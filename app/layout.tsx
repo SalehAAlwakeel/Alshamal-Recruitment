@@ -9,7 +9,7 @@ import AppBackground from "@/components/AppBackground";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://shamalsaudi.com"),
+  metadataBase: new URL("https://www.shamalsaudi.com"),
   title: "Shamal Recruitment Office - Professional Domestic Help Services",
   description: "Find reliable and experienced domestic help services in Saudi Arabia",
   alternates: {

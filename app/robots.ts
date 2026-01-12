@@ -8,9 +8,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://shamalsaudi.com/sitemap.xml",
-    host: "https://shamalsaudi.com",
+    sitemap: "https://www.shamalsaudi.com/sitemap.xml",
+    host: "https://www.shamalsaudi.com",
   };
 }
+
 
 

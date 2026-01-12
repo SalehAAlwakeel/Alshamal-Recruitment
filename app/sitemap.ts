@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://shamalsaudi.com";
+  const baseUrl = "https://www.shamalsaudi.com";
   const now = new Date();
 
   const routes = [
@@ -18,5 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === "" ? 1 : 0.8,
   }));
 }
+
 
 
