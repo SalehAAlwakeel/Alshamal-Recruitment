@@ -83,7 +83,7 @@ export default function InquireForm() {
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md">
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Maid ID
+              Helper ID
             </label>
             <input
               type="text"

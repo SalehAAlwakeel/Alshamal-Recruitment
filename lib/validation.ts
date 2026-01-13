@@ -15,7 +15,7 @@ export const maidSchema = z.object({
 });
 
 export const leadSchema = z.object({
-  maidId: z.string().min(1, "Maid ID is required"),
+  maidId: z.string().min(1, "Helper ID is required"),
   name: z.string().min(1, "Name is required").max(100),
   phone: z
     .string()
