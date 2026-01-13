@@ -12,9 +12,6 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.shamalsaudi.com"),
   title: "Shamal Recruitment Office - Professional Domestic Help Services",
   description: "Find reliable and experienced domestic help services in Saudi Arabia",
-  alternates: {
-    canonical: "/",
-  },
   robots: {
     index: true,
     follow: true,
