@@ -98,7 +98,7 @@ export async function createMaidAction(formData: FormData) {
     // We now auto-generate all other maid details.
     // Admin only chooses nationality and uploads photos.
     const maidData = {
-      name: "Maid",
+      name: "Helper",
       age: 30,
       nationality,
       etaDays: 30,
@@ -122,7 +122,7 @@ export async function createMaidAction(formData: FormData) {
     };
 
     await createMaid(maid);
-    revalidatePath("/maids");
+    revalidatePath("/helpers");
     revalidatePath("/admin/maids");
     return { success: true };
   } catch (error: any) {
@@ -179,9 +179,9 @@ export async function updateMaidAction(id: string, formData: FormData) {
     const validated = maidSchema.parse(maidData);
 
     await updateMaid(id, validated);
-    revalidatePath("/maids");
+    revalidatePath("/helpers");
     revalidatePath("/admin/maids");
-    revalidatePath(`/maids/${id}`);
+    revalidatePath(`/helpers/${id}`);
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -204,7 +204,7 @@ export async function deleteMaidAction(id: string) {
     }
 
     await deleteMaid(id);
-    revalidatePath("/maids");
+    revalidatePath("/helpers");
     revalidatePath("/admin/maids");
     return { success: true };
   } catch (error: any) {

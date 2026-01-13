@@ -5,7 +5,7 @@ export const translations = {
     officeName: "Shamal Recruitment Office",
     nav: {
       home: "Home",
-      browseMaids: "Browse Maids",
+      browseMaids: "Browse Helpers",
       requirements: "Requirements",
       contactUs: "Contact Us",
     },
@@ -23,7 +23,7 @@ export const translations = {
       heroTitle: "Find Your Perfect Domestic Help",
       heroSubtitle:
         "Professional, reliable, and experienced domestic help services in Saudi Arabia.",
-      heroButton: "Browse Maids",
+      heroButton: "Browse Helpers",
       heroTagline: "Licensed - Trusted",
       heroBadgeLabel: "Shamal Care",
       heroCardTitle: "Premium recruitment experience",
@@ -42,7 +42,7 @@ export const translations = {
       description2:
         "Our comprehensive screening process ensures that every candidate meets our high standards for professionalism, reliability, and experience. We handle all the paperwork and logistics, making the recruitment process smooth and hassle-free for you.",
       description3:
-        "Browse our catalog of available maids, read their profiles, and find the perfect match for your household needs.",
+        "Browse our catalog of available helpers, read their profiles, and find the perfect match for your household needs.",
       whyChooseTitle: "Why families choose Shamal",
       whyChooseBody:
         "Clear process, ongoing support, and candidates who match your family’s cultural and professional needs.",
@@ -93,16 +93,16 @@ export const translations = {
       requirementsVisaTitle: "Visa issuance steps",
     },
     maids: {
-      title: "Browse Maids",
+      title: "Browse Helpers",
       headerTagline: "Licensed - Trusted • 8+ years of recruitment experience",
-      searchPlaceholder: "Enter Maid ID (e.g., M001)...",
-      searchLabel: "Search by Maid ID",
+      searchPlaceholder: "Enter Helper ID (e.g., ID 0001)...",
+      searchLabel: "Search by Helper ID",
       showing: "Showing",
       of: "of",
-      maids: "maids",
-      noResults: "No maids found matching your criteria.",
-      backToMaids: "← Back to Maids",
-      maidId: "Maid ID",
+      maids: "helpers",
+      noResults: "No helpers found matching your criteria.",
+      backToMaids: "← Back to Helpers",
+      maidId: "Helper ID",
       age: "Age",
       nationality: "Nationality",
       eta: "ETA",
@@ -150,7 +150,7 @@ export const translations = {
     },
     inquire: {
       title: "Submit Inquiry",
-      subtitle: "Fill out the form below to inquire about this maid.",
+      subtitle: "Fill out the form below to inquire about this helper.",
       name: "Name",
       phone: "Phone Number",
       phonePlaceholder: "+9665XXXXXXXX or 05XXXXXXXX",

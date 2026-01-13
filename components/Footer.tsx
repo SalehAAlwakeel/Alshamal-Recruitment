@@ -115,7 +115,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/maids" className="hover:text-white transition-colors">
+                <Link href="/helpers" className="hover:text-white transition-colors">
                   {t.nav.browseMaids}
                 </Link>
               </li>

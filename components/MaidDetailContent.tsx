@@ -19,10 +19,12 @@ export default function MaidDetailContent({
   const { t } = useLanguage();
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
 
+  const helperNameForAlt = `${t.maids.maidId} ${maidDisplayId}`;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Link
-        href="/maids"
+        href="/helpers"
         className="text-primary-600 hover:text-primary-700 mb-4 inline-block"
       >
         {t.maids.backToMaids}
@@ -34,11 +36,13 @@ export default function MaidDetailContent({
             <MaidDetailImages
               photos={maid.photos}
               maidId={maidDisplayId}
-              maidName={maid.name}
+              maidName={helperNameForAlt}
             />
           </div>
           <div className="md:w-1/2 p-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">{maid.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">
+              {t.maids.maidId}: {maidDisplayId}
+            </h1>
             <div className="space-y-4 mb-6">
               <div>
                 <span className="font-semibold text-gray-700">{t.maids.maidId}:</span>{" "}

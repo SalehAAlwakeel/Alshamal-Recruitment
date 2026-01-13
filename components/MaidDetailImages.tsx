@@ -35,7 +35,7 @@ export default function MaidDetailImages({
           onClick={() => handleImageClick(0)}
         >
           <Image
-            src={photos[0] || "/maids/placeholder.svg"}
+            src={photos[0] || "/helpers/placeholder.svg"}
             alt={maidName}
             fill
             className="object-cover"

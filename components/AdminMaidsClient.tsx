@@ -62,17 +62,17 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this maid?")) {
+    if (!confirm("Are you sure you want to delete this helper?")) {
       return;
     }
 
     const result = await deleteMaidAction(id);
     if (result.success) {
       setMaids(maids.filter((m) => m.id !== id));
-      showToast("Maid deleted successfully", "success");
+      showToast("Helper deleted successfully", "success");
       router.refresh();
     } else {
-      showToast(result.error || "Failed to delete maid", "error");
+      showToast(result.error || "Failed to delete helper", "error");
     }
   };
 
@@ -86,7 +86,7 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
     setEditingMaid(null);
     router.refresh();
     showToast(
-      editingMaid ? "Maid updated successfully" : "Maid created successfully",
+      editingMaid ? "Helper updated successfully" : "Helper created successfully",
       "success"
     );
   };
@@ -107,7 +107,7 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
             }}
             className="bg-primary-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
           >
-            Add New Maid
+            Add New Helper
           </button>
           <button
             onClick={handleLogout}
@@ -146,7 +146,7 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Maid ID
+                Helper ID
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Photo
@@ -161,7 +161,7 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
               const maidDisplayId = getMaidDisplayId(maid, maids);
               const handleCopyId = () => {
                 navigator.clipboard.writeText(maidDisplayId);
-                showToast("Maid ID copied to clipboard", "success");
+                showToast("Helper ID copied to clipboard", "success");
               };
               
               return (
@@ -178,7 +178,7 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="relative h-12 w-12">
                       <Image
-                        src={maid.photos[0] || "/maids/placeholder.svg"}
+                        src={maid.photos[0] || "/helpers/placeholder.svg"}
                         alt={maid.name}
                         fill
                         className="object-cover rounded"
@@ -222,14 +222,14 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
           const maidDisplayId = getMaidDisplayId(maid, maids);
           const handleCopyId = () => {
             navigator.clipboard.writeText(maidDisplayId);
-            showToast("Maid ID copied to clipboard", "success");
+            showToast("Helper ID copied to clipboard", "success");
           };
           
           return (
             <div key={maid.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="relative h-48 w-full">
                 <Image
-                  src={maid.photos[0] || "/maids/placeholder.svg"}
+                  src={maid.photos[0] || "/helpers/placeholder.svg"}
                   alt={maid.name}
                   fill
                   className="object-cover"

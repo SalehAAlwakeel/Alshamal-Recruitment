@@ -176,7 +176,7 @@ export default function ImageLightbox({
               className="relative w-full h-full flex items-center justify-center"
             >
               <Image
-                src={images[currentIndex] || "/maids/placeholder.svg"}
+                src={images[currentIndex] || "/helpers/placeholder.svg"}
                 alt={`${maidName} - Photo ${currentIndex + 1}`}
                 fill
                 className="object-contain"

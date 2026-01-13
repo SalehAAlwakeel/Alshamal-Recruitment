@@ -19,14 +19,14 @@ export default async function InquireSuccessPage({
           Thank you for your inquiry. We will contact you shortly.
         </p>
         {maidId && (
-          <p className="text-sm text-gray-600 mb-4">Maid ID: {maidId}</p>
+          <p className="text-sm text-gray-600 mb-4">Helper ID: {maidId}</p>
         )}
         <div className="space-y-2">
           <Link
-            href="/maids"
+            href="/helpers"
             className="inline-block bg-primary-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
           >
-            Browse More Maids
+            Browse More Helpers
           </Link>
           <br />
           <Link

@@ -47,7 +47,7 @@ export default function Hero() {
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
             >
               <Link
-                href="/maids"
+                href="/helpers"
                 className="inline-flex items-center justify-center rounded-full bg-white text-primary-800 px-8 py-3 text-base md:text-lg font-semibold shadow-lg shadow-primary-900/40 hover:bg-primary-50 transition-colors"
               >
                 {t.home.heroButton}

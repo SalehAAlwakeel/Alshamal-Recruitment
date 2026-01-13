@@ -46,7 +46,7 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
           onClick={handleImageClick}
         >
           <Image
-            src={maid.photos[0] || "/maids/placeholder.svg"}
+            src={maid.photos[0] || "/helpers/placeholder.svg"}
             alt={maidDisplayId}
             fill
             className="object-cover"
@@ -76,7 +76,7 @@ export default function MaidCard({ maid, maidDisplayId }: MaidCardProps) {
         onClose={() => setLightboxOpen(false)}
         onNavigate={setCurrentImageIndex}
         maidId={displayId}
-        maidName={maid.name}
+        maidName={t.maids.maidId}
         onInquire={() => {
           setLightboxOpen(false);
           setInquiryModalOpen(true);

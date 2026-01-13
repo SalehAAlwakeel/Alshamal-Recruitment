@@ -318,7 +318,7 @@ export default function Home() {
               </p>
             </div>
             <Link
-              href="/maids"
+              href="/helpers"
               className="inline-flex items-center justify-center rounded-full bg-white text-primary-800 px-6 py-3 text-sm md:text-base font-semibold shadow-lg shadow-primary-900/40 hover:bg-primary-50 transition-colors"
             >
               {t.nav.browseMaids}
@@ -379,7 +379,7 @@ export default function Home() {
                   {isActive ? (
                     <div className="flex justify-center">
                       <Link
-                        href="/maids"
+                        href="/helpers"
                         className="inline-flex items-center justify-center rounded-full bg-primary-600 text-white px-5 py-2 text-xs md:text-sm font-semibold shadow-sm hover:bg-primary-700 transition-colors group-hover:shadow-primary-900/40"
                       >
                         {language === "ar" ? "اطلب الآن" : "View candidates"}

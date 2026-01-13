@@ -47,7 +47,7 @@ export default function Navbar() {
                 {t.nav.home}
               </Link>
               <Link
-                href="/maids"
+                href="/helpers"
                 className="px-2 text-sm md:text-base font-medium tracking-wide text-white/80 hover:text-white transition-colors"
               >
                 {t.nav.browseMaids}
@@ -134,7 +134,7 @@ export default function Navbar() {
               <Link href="/" onClick={() => setMenuOpen(false)}>
                 {t.nav.home}
               </Link>
-              <Link href="/maids" onClick={() => setMenuOpen(false)}>
+              <Link href="/helpers" onClick={() => setMenuOpen(false)}>
                 {t.nav.browseMaids}
               </Link>
               <Link href="/requirements" onClick={() => setMenuOpen(false)}>

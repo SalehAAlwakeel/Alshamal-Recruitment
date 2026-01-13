@@ -133,15 +133,15 @@ export default function MaidForm({ maid, allMaids = [], onSuccess, onCancel }: M
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            {maid ? "Edit Maid" : "Add New Maid"}
+            {maid ? "Edit Helper" : "Add New Helper"}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Show Maid ID only when editing */}
+            {/* Show Helper ID only when editing */}
             {maid && maidDisplayId && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Maid ID
+                  Helper ID
                 </label>
                 <input
                   type="text"
@@ -276,8 +276,8 @@ export default function MaidForm({ maid, allMaids = [], onSuccess, onCancel }: M
                 {isSubmitting
                   ? "Saving..."
                   : maid
-                    ? "Update Maid"
-                    : "Create Maid"}
+                    ? "Update Helper"
+                    : "Create Helper"}
               </button>
               <button
                 type="button"
