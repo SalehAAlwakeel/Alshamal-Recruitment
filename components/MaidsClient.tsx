@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import type { Maid } from "@/types/maid";
 import { getMaidDisplayId } from "@/lib/utils";
 import MaidCard from "./MaidCard";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRouter } from "next/navigation";
 
 interface MaidsClientProps {
   initialMaids: Maid[];
@@ -12,7 +13,33 @@ interface MaidsClientProps {
 
 export default function MaidsClient({ initialMaids }: MaidsClientProps) {
   const { t } = useLanguage();
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const lastRefreshAt = useRef(0);
+
+  // Keep the public list in sync when the user switches back from the admin tab.
+  useEffect(() => {
+    const maybeRefresh = () => {
+      const now = Date.now();
+      if (now - lastRefreshAt.current < 2000) return;
+      lastRefreshAt.current = now;
+      router.refresh();
+    };
+
+    const onFocus = () => maybeRefresh();
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        maybeRefresh();
+      }
+    };
+
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [router]);
 
   const filteredMaids = useMemo(() => {
     if (!searchQuery.trim()) {

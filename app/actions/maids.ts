@@ -165,6 +165,11 @@ export async function updateMaidAction(id: string, formData: FormData) {
       throw new Error("At least one photo is required");
     }
 
+    // Delete removed photos from Supabase Storage (best-effort)
+    const removedPhotos = (existingMaid.photos || []).filter(
+      (p) => !photos.includes(p)
+    );
+
     const maidData = {
       name: existingMaid.name,
       age: existingMaid.age,
@@ -179,6 +184,24 @@ export async function updateMaidAction(id: string, formData: FormData) {
     const validated = maidSchema.parse(maidData);
 
     await updateMaid(id, validated);
+
+    if (removedPhotos.length) {
+      try {
+        const supabaseAdmin = getSupabaseAdmin();
+        const objectPaths = removedPhotos
+          .map(extractStorageObjectPath)
+          .filter((p): p is string => Boolean(p));
+        if (objectPaths.length) {
+          await supabaseAdmin.storage
+            .from(SUPABASE_STORAGE_BUCKET)
+            .remove(objectPaths);
+        }
+      } catch (err) {
+        // Don't fail the update if we couldn't clean up storage.
+        console.error("Failed to remove deleted photos from storage:", err);
+      }
+    }
+
     revalidatePath("/helpers");
     revalidatePath("/admin/maids");
     revalidatePath(`/helpers/${id}`);
