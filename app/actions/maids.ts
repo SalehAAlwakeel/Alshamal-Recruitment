@@ -123,6 +123,7 @@ export async function createMaidAction(formData: FormData) {
 
     await createMaid(maid);
     revalidatePath("/helpers");
+    revalidatePath("/admin/helpers");
     revalidatePath("/admin/maids");
     return { success: true };
   } catch (error: any) {
@@ -203,6 +204,7 @@ export async function updateMaidAction(id: string, formData: FormData) {
     }
 
     revalidatePath("/helpers");
+    revalidatePath("/admin/helpers");
     revalidatePath("/admin/maids");
     revalidatePath(`/helpers/${id}`);
     return { success: true };
@@ -228,6 +230,7 @@ export async function deleteMaidAction(id: string) {
 
     await deleteMaid(id);
     revalidatePath("/helpers");
+    revalidatePath("/admin/helpers");
     revalidatePath("/admin/maids");
     return { success: true };
   } catch (error: any) {

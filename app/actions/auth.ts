@@ -26,7 +26,7 @@ export async function loginAction(formData: FormData) {
     // Compare passwords
     if (validated.password === adminPassword) {
       await setAuthCookie();
-      redirect("/admin/maids");
+      redirect("/admin/helpers");
     } else {
       throw new Error("Invalid password. Please check your password and try again.");
     }

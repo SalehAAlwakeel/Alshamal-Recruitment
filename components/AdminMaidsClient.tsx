@@ -29,9 +29,10 @@ export default function AdminMaidsClient({ initialMaids }: AdminMaidsClientProps
         const navEntry = navEntries[0];
         const referrer = document.referrer;
         
-        // If referrer is the same page (admin/maids), it's likely a refresh
+        // If referrer is the same page (admin/helpers), it's likely a refresh
         // If referrer is empty or different, it's likely initial navigation
-        const isSamePage = referrer.includes('/admin/maids');
+        const isSamePage =
+          referrer.includes("/admin/helpers") || referrer.includes("/admin/maids");
         
         // Only log out if:
         // 1. Navigation type is 'reload' AND

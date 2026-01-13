@@ -29,12 +29,25 @@ export function getSupabaseAdmin() {
     "SUPABASE_SERVICE_KEY",
   ]);
 
+  // Avoid any caching of Supabase responses in Next.js App Router.
+  // This ensures admin add/delete/edit reflects immediately on the public site.
+  const noStoreFetch: typeof fetch = (input: any, init?: any) => {
+    return fetch(input, {
+      ...(init || {}),
+      cache: "no-store",
+      next: { revalidate: 0 },
+    });
+  };
+
   // Note: we intentionally use `any` here to avoid build-time type errors
   // without generating Supabase Database types.
   cachedAdminClient = createClient<any>(url, serviceKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
+    },
+    global: {
+      fetch: noStoreFetch,
     },
   });
 
